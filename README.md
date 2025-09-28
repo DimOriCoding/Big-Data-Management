@@ -16,7 +16,7 @@ The connection between publisher or subscriber is made through [**socket program
 <div style="text-align: center;">
   <img
     width="800"
-    height="200"
+    height="600"
     alt="image"
     src="https://github.com/user-attachments/assets/5df297a6-fdc0-48da-be38-d1d6ea0fd22e"
   />
