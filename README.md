@@ -54,10 +54,17 @@ The top left-hand column represents the server (broker), the column on the right
 From the server side it is observable that the API calls that the server makes to set up a “listening” socket which listens for connections from clients and consists of these methods:
 
 .socket(): where a socket object is created
+
 .bind(): This method binds broker to a specific IP and port so that it can listen to incoming requests on that IP and port.
+
 .listen(): This method puts the broker into listening mode when a client connects
+
 .accept(): When a subscriber or publisher connects, the server calls .accept() to accept, or complete, the connection.
+
 .connect(): The subscriber or publisher calls this method to establish a connection to the server and initiate the three-way handshake. The handshake step is important because it ensures that the client (subscriber/publisher) can reach the server (broker) and vice-versa. 
+
 .send(), .recv() By calling these methods data is exchanged (sending and receiving data) between the client and server
+
 Additionally there is the .sendall() function from python socket library which allow to send data to a server to which the socket is connected and the server can also send data to the client using it.
+
 .close(): This method helps client and server to close their respective connection sockets.
