@@ -1,0 +1,14 @@
+2 sub football
+5 sub basketball
+10 sub  barcelona
+3  sub  euro
+7  sub  uecl
+12 unsub barcelona
+8 unsub basketball
+5 unsub Olympiakos
+4 sub chelsea
+13 unsub chelsea
+5 sub euroleague
+
+
+
