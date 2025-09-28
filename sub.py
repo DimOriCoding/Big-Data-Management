@@ -55,6 +55,7 @@ def main(s, h, p, file):
                     t, m = received_2.split(" ", 1)
                     if t == top:
                         print("Received msg for the topic", t, ":", m)
+                        print("The subscriber", s, "receives msg for the topic", t, ":", m)
                 i += 1
                 if i == 1:
                     break
@@ -86,6 +87,7 @@ def main(s, h, p, file):
                 t, m = received_2.split(" ", 1)
                 if t == topic:
                     print("Received msg for the topic", t, ":", m)
+                    print("The subscriber", sub_id, "receives msg for the topic", t, ":", m)
             i += 1
             if i == 1:
                 break

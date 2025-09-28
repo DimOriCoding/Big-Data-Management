@@ -1,5 +1,5 @@
 1 pub basketball Celtics are on the NBA finals 
-3 pub olympiakos osfp tries to qualify for ucl
+3 pub Olympiakos osfp tries to qualify for ucl
 2 pub basketball Efes finally wins the euroleague trophy
 5 pub football psg qualifies for ucl semi finals
 6 pub uecl Paok is on the quarter-finals

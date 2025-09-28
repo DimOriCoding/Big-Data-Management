@@ -102,7 +102,7 @@ def subthread(ho, s_po):
                     print("The subscriber", s_id, "subscribes into the topic", top)
                     print(subscribes)
                     connections[0].sendall(bytes("OK", "utf-8"))
-                    connections[0].sendall(bytes(t_m, "utf-8"))   # Broker sends topic and message to the subscriber
+                    connections[0].sendall(bytes(t_m, "utf-8"))# Broker sends topic and message to the subscriber
                 else:
                     print("\n YOU ARE ALREADY SUBSCRIBED")
                     print(subscribes)
@@ -114,6 +114,7 @@ def subthread(ho, s_po):
                     subscribes.update({s_id: topics})
                     print(subscribes)
                     connections[0].sendall(bytes("OK", "utf-8"))
+                    print("The subscriber", s_id, "is unsubscribed from the topic", top)
                 else:
                     print("\n NO UNSUBSCRIBE")
                     connections[0].sendall(bytes("OK", "utf-8"))
