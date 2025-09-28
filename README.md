@@ -68,3 +68,5 @@ From the server side it is observable that the API calls that the server makes t
 Additionally there is the .sendall() function from python socket library which allow to send data to a server to which the socket is connected and the server can also send data to the client using it.
 
 .close(): This method helps client and server to close their respective connection sockets.
+
+This exercise in order to run correctly first broker.py must be run, then sub.py and finally pub.py must be run.
