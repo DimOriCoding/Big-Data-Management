@@ -13,4 +13,4 @@ The main project that is implemented through this postgraduate course, is the co
 The connection between publisher or subscriber is made through [**socket programming**](https://github.com/DimOriCoding/Big-Data-Management/blob/main/Pub-Sub%20system%20assignment%20report.pdf), which consists a way of connecting two nodes on a network to communicate with each other. One socket(node) listens on a particular port at an IP, while the other socket reaches out to the other to form a connection. The server (broker) forms the listener socket while the client (publisher, subscriber) reaches out to the server. The Python socket library provides a low-level networking interface that allows you to create and manage network connections. A socket in Python is an endpoint for sending or receiving data across a network using the socket API.
 
 
-   <img width="600" height="700" alt="image" src="https://github.com/user-attachments/assets/5df297a6-fdc0-48da-be38-d1d6ea0fd22e" />
+   <img width="500" height="300" alt="image" src="https://github.com/user-attachments/assets/5df297a6-fdc0-48da-be38-d1d6ea0fd22e" />
