@@ -7,10 +7,10 @@ connections = []  # list that keeps track of the connections between broker-publ
 host = "127.0.0.1"
 s_port = 0
 p_port = 0
-t_m = "football CR7 is a great player"  # we assume that the time waiting is 0 and the name of publisher the same
+t_mess = "No messages yet"  # we assume that the time waiting is 0 and the name of publisher the same
 # with this we give when we start to run from the terminal
-
 # Insertion of the instances(s_port,p_port) in order the broker starts to run.
+publishes_topics = {}   # Dictionary that maps topics-messages
 opts, args = getopt.getopt(sys.argv[1:], "s:p:")
 
 for k, v in opts:
@@ -34,6 +34,7 @@ def pubthread(ho, p_po):
 
     if len(connections) < 2:  # Firstly we run the subthread and after the pubthread
         connections.append(conn)
+    global publishes_topics
     while True:
         try:
             data = connections[1].recv(1024).strip()
@@ -42,14 +43,18 @@ def pubthread(ho, p_po):
             p_id, c, t, mess = data.split(" ", 3)
             print(p_id, c, t, mess)  # In our case we only have one publisher
             # Messages are of the form: This is the first message, without commas
-            global t_m
-            t_m = t + " " + mess
+            global t_mess
+            t_mess = t + " " + mess
             if c == "pub":
-                publishes = {}
-                publishes.update({t: mess})  # Publishing a message to a topic
-                print(publishes)
+                #publishes_dict.update({t: mess})
+                if t not in publishes_topics:
+                    publishes_topics[t] = [mess]  # initialize a list with first message
+                else:
+                    publishes_topics[t].append(mess)  # append new message to the list
+                # Publishing a message to a topic
+                print(publishes_topics)
                 connections[1].sendall(bytes("OK", "utf-8"))
-                connections[1].sendall(bytes(t_m, "utf-8"))
+                connections[1].sendall(bytes(t_mess, "utf-8"))
         except Exception:
             print("Pub Disconnected")
             break
@@ -71,9 +76,8 @@ def subthread(ho, s_po):
         connections.append(conn)
 
     topics = []  # Keep track of the topics that subscribers want to subscribe
+    subs = []  # Keep track of which subscribers are inserted to our system
     subscribes = {}  # The broker keeps track of how many topics a subscriber has subscribed
-    subs = []  # Keep track of how many subscribers are inserted to our system
-
     while True:
         try:
             data = connections[0].recv(1024).strip()
@@ -83,29 +87,38 @@ def subthread(ho, s_po):
             if subs.count(s_id) >= 1:
                 subs.append(s_id)
                 if subs[len(subs)-2] == subs[len(subs)-1]:
-                    print(s_id, cmd, top)
-                else:
-                    topics.clear()
-                    subscribes.clear()
+                    print("The subscriber", s_id,  "already exists")
                     print(s_id, cmd, top)
             if subs.count(s_id) == 0:
                 subs.append(s_id)
+            if subs.count(s_id) == 0 and len(subs) > 0:
                 topics.clear()
                 subscribes.clear()
-                print(s_id, cmd, top)
+            print(s_id, cmd, top)
             if cmd == "sub":
                 if topics.count(top) == 0:
-                    subs_topics = {}
                     topics.append(top)
-                    subs_topics.update({top: s_id})  # subscription
+                    # subscription
                     subscribes.update({s_id: topics})
                     print("The subscriber", s_id, "subscribes into the topic", top)
                     print(subscribes)
+                    # Concatenate all messages separated by '||'
+                    if top in publishes_topics:
+                        all_msgs = "||".join(publishes_topics[top])
+                        t_m = f"{top} {all_msgs}"
+                    else:
+                        t_m = f"{top} No messages yet"
                     connections[0].sendall(bytes("OK", "utf-8"))
-                    connections[0].sendall(bytes(t_m, "utf-8"))# Broker sends topic and message to the subscriber
+                    connections[0].sendall(bytes(t_m, "utf-8"))  # Broker sends topic and message to the subscriber
                 else:
                     print("\n YOU ARE ALREADY SUBSCRIBED")
                     print(subscribes)
+                    # Concatenate all messages separated by '||'
+                    if top in publishes_topics:
+                        all_msgs = "||".join(publishes_topics[top])
+                        t_m = f"{top} {all_msgs}"
+                    else:
+                        t_m = f"{top} No messages yet"
                     connections[0].sendall(bytes("OK", "utf-8"))
                     connections[0].sendall(bytes(t_m, "utf-8"))  # Broker sends topic and message to the subscriber
             if cmd == "unsub":
@@ -132,8 +145,6 @@ def main(h, s, p):
     try:
         threading.Thread(target=subthread, args=(h, s)).start()
         threading.Thread(target=pubthread, args=(h, p)).start()
-
-
 
     except KeyboardInterrupt as msg:
         sys.exit(0)

@@ -50,55 +50,61 @@ def main(s, h, p, file):
                 # It is not allowed when we have unsubscription to receive messages in this topic
                 # Checking which of the two received has the topic and message about checking for subscribe
                 if cmd == "sub":
-                    received_2 = str(sock.recv(1024), "utf-8")
-                    print("Received: " + received_2)
+                    received_2 = str(sock.recv(1024), "utf-8").strip()
                     t, m = received_2.split(" ", 1)
+                    # Split multiple messages separated by '||'
+                    messages = m.split("||")
                     if t == top:
-                        print("Received msg for the topic", t, ":", m)
-                        print("The subscriber", s, "receives msg for the topic", t, ":", m)
+                        for msg in messages:
+                           if msg == "No messages yet":
+                             print("The subscriber", s, "has not received any msg for the topic", t)
+                           else:
+                             print("Received msg for the topic", t, ":", msg)
+                             print("The subscriber", s, "receives msg for the topic", t, ":", msg)
                 i += 1
                 if i == 1:
                     break
-
-    time_wait = int(input("Give time for sub to wait:  "))
-    while time_wait < 0:
+    ans = input('\n Do you want to continue(y/n) :')
+    if ans == "y":
         time_wait = int(input("Give time for sub to wait:  "))
-
-    while time_wait >= 0:
-        time.sleep(time_wait)
-        sub_id =  str(input("Give subs id:     "))  # Give names such as s1, s10, s30, in order to input more subs
-        command = str(input("Give subs command:     "))
-        while command != "sub" and command != "unsub":
-            command = str(input("Give subs command:     "))
-
-        topic = str(input("Give topic for subscribe:      "))
-        data = sub_id + " " + command + " " + topic
-        print(data)
-        i = 0
-        while True:
-            sock.sendall(bytes(data + "\n", "utf-8"))
-            received_1 = str(sock.recv(1024), "utf-8")
-            print("Received: " + received_1)
-            # It is not allowed when we have unsubscription to receive messages in this topic
-            # Checking which of the two received has the topic and message about checking for subscribe
-            if command == "sub":
-                received_2 = str(sock.recv(1024), "utf-8")
-                print("Received: " + received_2)
-                t, m = received_2.split(" ", 1)
-                if t == topic:
-                    print("Received msg for the topic", t, ":", m)
-                    print("The subscriber", sub_id, "receives msg for the topic", t, ":", m)
-            i += 1
-            if i == 1:
-                break
-        ans = input('\n Do you want to continue(y/n) :')
-        if ans == 'y':
-            time_wait = int(input("Give time for sub to wait:  "))
-            while time_wait < 0:
-                time_wait = int(input("Give time for sub to wait:  "))
-            continue
-        else:
-            break
+        while time_wait < 0:
+             time_wait = int(input("Give time for sub to wait:  "))
+        while time_wait >= 0:
+             time.sleep(time_wait)
+             sub_id =  str(input("Give subs id:     "))  # Give names such as s1, s10, s30, in order to input more subs
+             command = str(input("Give subs command:     "))
+             while command != "sub" and command != "unsub":
+               command = str(input("Give subs command:     "))
+             topic = str(input("Give topic for subscribe/unsubscribe:      "))
+             data = sub_id + " " + command + " " + topic
+             print(data)
+             i = 0
+             while True:
+               sock.sendall(bytes(data + "\n", "utf-8"))
+               received_1 = str(sock.recv(1024), "utf-8")
+               print("Received: " + received_1)
+               if command == "sub":
+                 received_2 = str(sock.recv(1024), "utf-8")
+                 t, m = received_2.split(" ", 1) # Split multiple messages separated by '||'
+                 messages = m.split("||")
+                 if t == topic:
+                    for msg in messages:
+                        if msg == "No messages yet":
+                            print("The subscriber", sub_id, "has not received any msg for the topic", t)
+                        else:
+                            print("Received msg for the topic", t, ":", msg)
+                            print("The subscriber", sub_id, "receives msg for the topic", t, ":", msg)
+               i += 1
+               if i == 1:
+                  break
+             ans = input('\n Do you want to continue(y/n) :')
+             if ans == "y":
+                 time_wait = int(input("Give time for pub to wait:  "))
+                 while time_wait < 0:
+                     time_wait = int(input("Give time for pub to wait:  "))
+                 continue
+             else:
+                 break
 
 
 if __name__ == '__main__':
