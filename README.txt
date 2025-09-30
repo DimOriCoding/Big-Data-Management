@@ -27,14 +27,16 @@ After that we run the sub.py from command line and as it starts running after a 
 or a little bit earlier) in terminal we start to run pub.py. 
 
 About the keyboard the most preferable way to run the sub and pub is firstly to give sub_id, time_wait , command(sub, unsub) and topic run 
-them, the ìreceived = OKî is appeared and then put the same for pub (sub_id, time_wait , command(pub) topic and message). 
+them, the ‚Äúreceived = OK‚Äù is appeared and then put the same for pub (sub_id, time_wait , command(pub) topic and message). 
 
 Also you can run it with the same way into the keyboard but first the pub and secondly the sub.
 Note: If we want to publish a message into a topic a subscriber is already subscribed (e.g s1 sub topic), 
 then we have to enter the same id command and topic again (s1 sub topic), in order to confirm that the subscriber is already subscribed 
 and then to recive from publisher the same or different message to the same topic (e.g p1 pub topic message).
+P.S. The whole project(python files broker.py, sub.py, pub.py) has improved a little bit in order to save the topics and the messages sending from publisher to this topics and finally to forward all the messages to the subscriber that is subscribed to a specific topic. This is an additional improvement from the project objectives, because storing/remembering messages is out of the scope of this project. 
 If you have any problem about source code (e.g you can not see it) or any other problem with the project please contact me on emails 
 dimori@outlook.com.gr or ic121006@di.uoa.gr
+
 
 
 
